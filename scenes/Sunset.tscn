@@ -1,0 +1,195 @@
+[gd_scene load_steps=26 format=3 uid="uid://q3oqovjjwg63"]
+
+[ext_resource type="Script" uid="uid://h5ktq382xcfd" path="res://scripts/main_vr_init.gd" id="1_f80w3"]
+[ext_resource type="Texture2D" uid="uid://bw6v4d6agwcyp" path="res://textures/tilenormal.jpg" id="2_yej1p"]
+[ext_resource type="Texture2D" uid="uid://br3wcdmcb663w" path="res://textures/sci_fi_normal.jpg" id="3_jps80"]
+[ext_resource type="Texture2D" uid="uid://ce51644t0j12s" path="res://scenes/sky/textures/belfast_sunset_puresky_1k.exr" id="4_7alhy"]
+[ext_resource type="Shader" uid="uid://eup5fmkmhwjf" path="res://scenes/sky/clouds.gdshader" id="5_3o1w2"]
+[ext_resource type="PackedScene" uid="uid://dw0bd63cupmu5" path="res://BattleRoyal/sm_bld_house_01.tscn" id="6_h0sd7"]
+[ext_resource type="PackedScene" uid="uid://b10c5na7842s5" path="res://scenes/touch_controls.tscn" id="7_yej1p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1daua"]
+albedo_color = Color(0.458405, 0.458405, 0.458405, 1)
+metallic_specular = 0.0
+normal_enabled = true
+normal_scale = 4.09
+normal_texture = ExtResource("2_yej1p")
+uv1_scale = Vector3(200, 200, 1)
+distance_fade_min_distance = 28.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mm3s"]
+albedo_color = Color(0.572549, 0.572549, 0.572549, 1)
+metallic_specular = 0.0
+normal_enabled = true
+normal_texture = ExtResource("3_jps80")
+uv1_scale = Vector3(3, 1.905, 1)
+uv1_offset = Vector3(1.01, 0.06, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3m01o"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("StandardMaterial3D_7mm3s")
+add_uv2 = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x2jji"]
+size = Vector3(82.3757, 1, 58.3628)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8bubv"]
+albedo_color = Color(0.572988, 0.572988, 0.572988, 1)
+metallic_specular = 0.0
+normal_enabled = true
+normal_texture = ExtResource("2_yej1p")
+uv1_scale = Vector3(5, 5, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_x2jji"]
+lightmap_size_hint = Vector2i(17, 19)
+material = SubResource("StandardMaterial3D_8bubv")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_x2jji"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3dvue"]
+size = Vector3(1.92773, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6vsx5"]
+albedo_color = Color(0.572549, 0.572549, 0.572549, 1)
+metallic_specular = 0.0
+normal_enabled = true
+normal_texture = ExtResource("2_yej1p")
+uv1_scale = Vector3(10, 10, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_x2jji"]
+lightmap_size_hint = Vector2i(20, 16)
+material = SubResource("StandardMaterial3D_6vsx5")
+add_uv2 = true
+left_to_right = 1.0
+size = Vector3(2.39, 0.51, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_34yur"]
+size = Vector3(2.48102, 0.518555, 1)
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_q511t"]
+panorama = ExtResource("4_7alhy")
+energy_multiplier = 0.5
+
+[sub_resource type="Sky" id="Sky_55hi4"]
+sky_material = SubResource("PanoramaSkyMaterial_q511t")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_tmlvw"]
+background_mode = 2
+background_energy_multiplier = 0.36
+sky = SubResource("Sky_55hi4")
+fog_sky_affect = 0.0
+fog_height_density = 1.2716
+adjustment_enabled = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vvt46"]
+noise_type = 4
+seed = 710
+frequency = 0.0802
+fractal_ping_pong_strength = 3.205
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vvt46"]
+width = 16
+height = 16
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_vvt46")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g27v3"]
+render_priority = 0
+shader = ExtResource("5_3o1w2")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_vvt46")
+shader_parameter/cloud_density = 0.283
+shader_parameter/edge_softness = 0.5
+shader_parameter/cloud_color = Color(1, 1, 1, 1)
+shader_parameter/time_scale = 0.072
+shader_parameter/detail_strength = 1.0
+shader_parameter/noise_scale = 0.01
+
+[sub_resource type="SphereMesh" id="SphereMesh_p25i2"]
+material = SubResource("ShaderMaterial_g27v3")
+radius = 200.0
+height = 400.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_f80w3")
+player_spawn_path = NodePath("PlayerSpawn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(82.291, 0, 0, 0, 1, 0, 0, 0, 58.275, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_1daua")
+mesh = SubResource("BoxMesh_3m01o")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00730515, 0, -0.00157547)
+shape = SubResource("BoxShape3D_x2jji")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.59649, 0, -5.80542)
+
+[node name="Cylinder1" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("CylinderMesh_x2jji")
+skeleton = NodePath("../../StaticBody3D4/MeshInstance3D2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("CylinderShape3D_x2jji")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.195021, -3.2805)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D4"]
+transform = Transform3D(1.92639, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_3m01o")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00195313, 0, 0)
+shape = SubResource("BoxShape3D_3dvue")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(-0.907334, 0, 3.26113, 0, 3.385, 0, -3.26113, 0, -0.907334, -5.20668, 0.108809, -6.07766)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("PrismMesh_x2jji")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(0.976785, -0.214131, -0.00618812, 0.214198, 0.976693, 0.0138127, 0.00308621, -0.0148176, 0.999886, 0.0132384, -0.259861, -7.7486e-05)
+shape = SubResource("BoxShape3D_34yur")
+
+[node name="PlayerSpawn" type="Node3D" parent="."]
+
+[node name="SkySphere" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SkySphere"]
+environment = SubResource("Environment_tmlvw")
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="SkySphere"]
+transform = Transform3D(-0.377893, -0.404415, -0.832854, 0.214059, -0.913347, 0.346375, -0.900764, -0.0473868, 0.431716, 0, 0, 0)
+light_energy = 0.8
+shadow_enabled = true
+shadow_opacity = 0.61
+shadow_blur = 0.1
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 36.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkySphere"]
+mesh = SubResource("SphereMesh_p25i2")
+
+[node name="SM_Bld_House_01" parent="." instance=ExtResource("6_h0sd7")]
+transform = Transform3D(0.937245, 0, 0.34867, 0, 1, 0, -0.34867, 0, 0.937245, -19.3435, -0.821816, -10.5477)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -648.0
+offset_right = 300.0
+offset_bottom = -348.0
+grow_vertical = 0
+
+[node name="TouchControls" parent="Control" instance=ExtResource("7_yej1p")]
