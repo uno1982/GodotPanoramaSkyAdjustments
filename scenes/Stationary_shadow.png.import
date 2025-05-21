@@ -1,0 +1,28 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://dp2kpdsnwjyom"
+path.s3tc="res://.godot/imported/Stationary_shadow.png-3a4de37bf0b15dbea12cea4cec69dcb8.s3tc.ctexarray"
+path.etc2="res://.godot/imported/Stationary_shadow.png-3a4de37bf0b15dbea12cea4cec69dcb8.etc2.ctexarray"
+metadata={
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://scenes/Stationary_shadow.png"
+dest_files=["res://.godot/imported/Stationary_shadow.png-3a4de37bf0b15dbea12cea4cec69dcb8.s3tc.ctexarray", "res://.godot/imported/Stationary_shadow.png-3a4de37bf0b15dbea12cea4cec69dcb8.etc2.ctexarray"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=1
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=1
+slices/vertical=1
